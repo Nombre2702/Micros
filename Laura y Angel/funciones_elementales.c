@@ -7,7 +7,7 @@
 
 
 void pararPlataforma(){
-	TCCR5A &= ~(1 << COM5A1);
+	TCCR5A |= (1 << COM5A1);
 	TCCR5A &= ~(1 << COM5A0);
 
 }
@@ -16,7 +16,7 @@ void rotarIzquierda(){
 	// configurar dirección
 
 	PORTL |= (1 << PL0);
-	TCCR5A &= ~(1 << COM5A1);
+	TCCR5A |= (1 << COM5A1);
 	TCCR5A &= ~(1 << COM5A0);
 
 }
@@ -25,7 +25,7 @@ void rotarDerecha(){
 	// configurar dirección
 	
 	PORTL &= ~(1 << PL0);
-	TCCR5A &= ~(1 << COM5A1);
+	TCCR5A |= (1 << COM5A1);
 	TCCR5A &= ~(1 << COM5A0);
 
 	
@@ -45,7 +45,7 @@ void moverAdelante(){
 	// configurar dirección
 
 	PORTL &= ~(1 << PL1); //dirección
-	TCCR5B &= ~(1 << COM5A1);
+	TCCR5B |= (1 << COM5A1);
 	TCCR5B &= ~(1 << COM5A0);
 
 }
@@ -54,13 +54,13 @@ void moverAtras(int duty){
 	// configurar dirección
 
 	PORTL |= (1 << PL1); //dirección
-	TCCR5B &= ~(1 << COM5A1);
+	TCCR5B |= (1 << COM5A1);
 	TCCR5B &= ~(1 << COM5A0);
 
 }
 
 void pararVastago(){
-	TCCR5B &= ~(1 << COM5A1);
+	TCCR5B |= (1 << COM5A1);
 	TCCR5B &= ~(1 << COM5A0);
 }
 
@@ -77,7 +77,7 @@ void ceroVastago(int contador){
 void barrera_arriba(){
 	//REVISAR
 	PORTL |= (1 << PL2);
-	TCCR5C &= ~(1 << COM5A1);
+	TCCR5C |= (1 << COM5A1);
 	TCCR5C &= ~(1 << COM5A0);
 	
 }
@@ -87,7 +87,7 @@ void barrera_abajo(){
 	//REVISAR
 
 	PORTL &= ~(1 << PL2); //bajar barrera
-	TCCR5C &= ~(1 << COM5A1);
+	TCCR5C |= (1 << COM5A1);
 	TCCR5C &= ~(1 << COM5A0);
 }
 
