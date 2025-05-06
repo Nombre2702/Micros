@@ -7,23 +7,25 @@
 
 
 void pararPlataforma(){
-	OCR5A = 0;
+	TCCR5A &= ~(1 << COM5A1);
+	TCCR5A &= ~(1 << COM5A0);
+
 }
 
 void rotarIzquierda(){
-	// configurar direcci髇
+	// configurar direcci贸n
 
 	PORTL |= (1 << PL0);
-	TCCR5A |= (1 << COM5A1);
+	TCCR5A &= ~(1 << COM5A1);
 	TCCR5A &= ~(1 << COM5A0);
 
 }
 
 void rotarDerecha(){
-	// configurar direcci髇
+	// configurar direcci贸n
 	
 	PORTL &= ~(1 << PL0);
-	TCCR5A |= (1 << COM5A1);
+	TCCR5A &= ~(1 << COM5A1);
 	TCCR5A &= ~(1 << COM5A0);
 
 	
@@ -31,7 +33,7 @@ void rotarDerecha(){
 
 void ceroPlataforma(int contador){
 	// se puede hacer algo con los finales de carrera
-	// habr韆 que medir tiempos antes
+	// habr铆a que medir tiempos antes
 	if (contador == 2){
 		pararPlataforma();
 		}else{
@@ -40,25 +42,26 @@ void ceroPlataforma(int contador){
 }
 
 void moverAdelante(){
-	// configurar direcci髇
+	// configurar direcci贸n
 
-	PORTL &= ~(1 << PL1); //direcci髇
-	TCCR5B |= (1 << COM5A1);
+	PORTL &= ~(1 << PL1); //direcci贸n
+	TCCR5B &= ~(1 << COM5A1);
 	TCCR5B &= ~(1 << COM5A0);
 
 }
 
 void moverAtras(int duty){
-	// configurar direcci髇
+	// configurar direcci贸n
 
-	PORTL |= (1 << PL1); //direcci髇
-	TCCR5B |= (1 << COM5A1);
+	PORTL |= (1 << PL1); //direcci贸n
+	TCCR5B &= ~(1 << COM5A1);
 	TCCR5B &= ~(1 << COM5A0);
 
 }
 
 void pararVastago(){
-	OCR5B = 0;
+	TCCR5B &= ~(1 << COM5A1);
+	TCCR5B &= ~(1 << COM5A0);
 }
 
 void ceroVastago(int contador){
@@ -74,7 +77,7 @@ void ceroVastago(int contador){
 void barrera_arriba(){
 	//REVISAR
 	PORTL |= (1 << PL2);
-	TCCR5C |= (1 << COM5A1);
+	TCCR5C &= ~(1 << COM5A1);
 	TCCR5C &= ~(1 << COM5A0);
 	
 }
@@ -84,7 +87,7 @@ void barrera_abajo(){
 	//REVISAR
 
 	PORTL &= ~(1 << PL2); //bajar barrera
-	TCCR5C |= (1 << COM5A1);
+	TCCR5C &= ~(1 << COM5A1);
 	TCCR5C &= ~(1 << COM5A0);
 }
 
@@ -104,7 +107,7 @@ void led_off(){
 
 void parpadeo(){
 	led_off();
-	//timer gestionar con interrupci髇? o tengo que hacer yo el contador?
+	//timer gestionar con interrupci贸n? o tengo que hacer yo el contador?
 	led_on();
 }
 
