@@ -32,13 +32,7 @@ ISR(PCINT0_vect) {
 	
 }
 
-void loop(){
-	antirrebotes(sw2);
-	antirrebotes(sw3);
-	antirrebotes(sw4);
-	lectura1 = lectura2;
-	
-}
+
 
 void antirrebotes(){
 	if (sw2) {
@@ -62,4 +56,29 @@ void antirrebotes(){
 	
 }
 
+ISR(TIMER4_COMPA_vect){
+	unMs();
+	if (bloqueoentrada & (1 << SW2)) {
+		rebotesw2++;
+		if (rebotesw2 >= DEBOUNCE_TIEMPO_MS) {
+			rebotesw2 = 0;
+			bloqueoentrada &= ~(1 << SW2);
+		}
+	}
 
+	if (bloqueoentrada & (1 << SW3)) {
+		rebotesw3++;
+		if (rebotesw3 >= DEBOUNCE_TIEMPO_MS) {
+			rebotesw3 = 0;
+			bloqueoentrada &= ~(1 << SW3);
+		}
+	}
+
+	if (bloqueoentrada & (1 << SW4)) {
+		rebotesw4++;
+		if (rebotesw4 >= DEBOUNCE_TIEMPO_MS) {
+			rebotesw4 = 0;
+			bloqueoentrada &= ~(1 << SW4);
+		}
+	}
+}
