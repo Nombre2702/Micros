@@ -5,8 +5,7 @@
  *  Author: jlech
  */ 
 
-#include <avr/io.h>
-#include <avr/interrupt.h>
+#include "carga_retorno.h"
 
 //INICIALIZAR VARIABLES INTERNAS DE ESTADO
 int motor_carga = 0;
