@@ -13,7 +13,7 @@
 #define PWM3 32768
 #define PWM4 32768
 
-#define DEBOUNCE_TIME 20 //ms
+#define DEBOUNCE_TIEMPO_MS 20 //ms
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -85,5 +85,7 @@ void pararBarrera(void);
 void ledOn(void);
 void ledOff(void);
 void ledParpadeo(void);
+
+void filtrar(void);
 
 #endif
