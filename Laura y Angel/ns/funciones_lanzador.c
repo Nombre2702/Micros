@@ -40,32 +40,7 @@ volatile uint8_t rebotesw3 = 0;
 volatile uint8_t rebotesw4 = 0;
 
 
-ISR(TIMER4_COMPA_vect){
-	unMs();
-	if (bloqueoentrada & (1 << SW2)) {
-		rebotesw2++;
-		if (rebotesw2 >= DEBOUNCE_TIEMPO_MS) {
-			rebotesw2 = 0;
-			bloqueoentrada &= ~(1 << SW2);
-		}
-	}
 
-	if (bloqueoentrada & (1 << SW3)) {
-		rebotesw3++;
-		if (rebotesw3 >= DEBOUNCE_TIEMPO_MS) {
-			rebotesw3 = 0;
-			bloqueoentrada &= ~(1 << SW3);
-		}
-	}
-
-	if (bloqueoentrada & (1 << SW4)) {
-		rebotesw4++;
-		if (rebotesw4 >= DEBOUNCE_TIEMPO_MS) {
-			rebotesw4 = 0;
-			bloqueoentrada &= ~(1 << SW4);
-		}
-	}
-}
 
 void unMs(){
 	
@@ -176,7 +151,7 @@ void rotarDerecha(){
 
 void ceroPlataforma(){
 
-	comienzo == 1;
+	comienzo = 1;
 	
 	if (cuenta_comienzo < 2000){
 		rotarDerecha();
@@ -213,18 +188,18 @@ void moverAdelante(){
 	// configurar dirección
 	PORTL |= (1 << PL1);
 	// duty nuevo
-	TCCR5A |= (1 << COM5B1); TCCR5A &= ~(1 << COM5B0);
+	TCCR5B |= (1 << COM5B1); TCCR5B &= ~(1 << COM5B0);
 }
 
 void moverAtras(){
 	// configurar dirección
 	PORTL &= ~(1 << PL1);
 	// duty nuevo
-	TCCR5A |= (1 << COM5B1); TCCR5A &= ~(1 << COM5B0);
+	TCCR5B |= (1 << COM5B1); TCCR5B &= ~(1 << COM5B0);
 }
 
 void pararVastago(){
-	TCCR5A &= ~(1 << COM5B1); TCCR5A &= ~(1 << COM5B0);
+	TCCR5B &= ~(1 << COM5B1); TCCR5B &= ~(1 << COM5B0);
 }
 
 void ceroVastago(){
@@ -263,16 +238,16 @@ void disparo(){
 void barreraArriba(){
 
 	PORTL |= (1 << PL2);
-	TCCR5A |= (1 << COM5C1);
-	TCCR5A &= ~(1 << COM5C0);
+	TCCR5C |= (1 << COM5C1);
+	TCCR5C &= ~(1 << COM5C0);
 	
 }
 
 void barreraAbajo(){
 
 	PORTL &= ~(1 << PL2); //bajar barrera
-	TCCR5A |= (1 << COM5C1);
-	TCCR5A &= ~(1 << COM5C0);
+	TCCR5C |= (1 << COM5C1);
+	TCCR5C &= ~(1 << COM5C0);
 }
 
 void origenBarrera(){
@@ -282,8 +257,8 @@ void origenBarrera(){
 }
 
 void pararBarrera(){
-	TCCR5B &= ~(1 << COM5B1); 
-	TCCR5B &= ~(1 << COM5B0);
+	TCCR5C &= ~(1 << COM5B1);
+	TCCR5C &= ~(1 << COM5B0);
 
 	
 }
