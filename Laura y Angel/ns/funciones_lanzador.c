@@ -39,23 +39,6 @@ volatile uint8_t rebotesw2 =0;
 volatile uint8_t rebotesw3 = 0;
 volatile uint8_t rebotesw4 = 0;
 
-ISR(PCINT2_vect){
-	uint32_t now = millis();
-
-	// !(PINK & (1 << PKn)) devuelve un 1 (es decir que entra en el if) si el pin está a 0
-	if (!(PINK & (1 << SW2)) && (now - last_time_sw2 > DEBOUNCE_TIME)) {
-		last_time_sw2 = now;
-		contador_sw2++;
-	}
-	if (!(PINK & (1 << SW3)) && (now - last_time_sw3 > DEBOUNCE_TIME)) {
-		last_time_sw3 = now;
-		contador_sw3++;
-	}
-	if (!(PINK & (1 << SW4)) && (now - last_time_sw4 > DEBOUNCE_TIME)) {
-		last_time_sw4 = now;
-		contador_sw4++;
-	}
-}
 
 ISR(TIMER4_COMPA_vect){
 	unMs();
