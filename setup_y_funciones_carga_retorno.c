@@ -8,11 +8,11 @@
 #include "carga_retorno.h"
 
 //INICIALIZAR VARIABLES INTERNAS DE ESTADO
-volatile int motor_carga = 0;
-volatile int motor_retorno = 0;
-volatile int motor_carga_status = 0;
-volatile int motor_retorno_status = 0;
-volatile int habilita = 0;
+volatile uint8_t motor_carga = 0;
+volatile uint8_t motor_retorno = 0;
+volatile uint8_t motor_carga_status = 0;
+volatile uint8_t motor_retorno_status = 0;
+volatile uint8_t habilita = 0;
 
 void setup_rebotes(){
 	cli();
