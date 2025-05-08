@@ -17,8 +17,8 @@ volatile uint8_t habilita = 0;
 
 void setup_rebotes(){
 	cli();
-	TCCR3B &= ~(1 << COM3A0);	//Modo de funcionamiento normal
-	TCCR3B &= ~(1 << COM3A1);	//Modo de funcionamiento normal
+	TCCR3A &= ~(1 << COM3A0);	//Modo de funcionamiento normal
+	TCCR3A &= ~(1 << COM3A1);	//Modo de funcionamiento normal
 	TCCR3B |= (1 << CS31);	//Preescalado de 8
 	TCCR3B &= ~(1 << CS30);	//Preescalado de 8
 	TCCR3B &= ~(1 << CS32);	//Preescalado de 8
