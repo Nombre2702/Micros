@@ -22,7 +22,7 @@ void setup_rebotes(){
 	TCCR3B |= (1 << CS31);	//Preescalado de 8
 	TCCR3B &= ~(1 << CS30);	//Preescalado de 8
 	TCCR3B &= ~(1 << CS32);	//Preescalado de 8
-	TCNT3 = 0xD8F0;	//Inica la cuenta para que solo queden 10000, 10ms, evita la necesidad de output compares
+	TCNT3 = 0x3CAF;	//Inica la cuenta para que solo queden 50000, 50ms, evita la necesidad de output compares
 	TIMSK3 |= (1 << TOIE3);	//Habilita interrupciones
 	sei();
 }
@@ -81,7 +81,7 @@ ISR(PCINT0_vect){
 		motor_retorno=0;	//Avisa de que el motor esta parado
 		PCMSK0 &= ~(1 << PCINT0);	//Deshabilita la interrupcion
 		habilita = 1;	//Permite que se pueda rehabilitar la interrupcion
-		TCNT3=0x3CAF;	//Pone la cuenta a falta de 10000, para asegurarnos de que pasan 10 ms
+		TCNT3=0x3CAF;	//Pone la cuenta a falta de 50000, para asegurarnos de que pasan 50 ms
 	}
 }
 
@@ -92,7 +92,7 @@ ISR(PCINT1_vect){
 		motor_carga=0;	//Avisa de que el motor esta parado
 		PCMSK0 &= ~(1 << PCINT1);	//Deshabilita la interrupcion
 		habilita = 1;	//Permite que se pueda rehabilitar la interrupcion
-		TCNT3=0x3CAF;	//Pone la cuenta a falta de 10000, para asegurarnos de que pasan 10 ms
+		TCNT3=0x3CAF;	//Pone la cuenta a falta de 50000, para asegurarnos de que pasan 50 ms
 	}
 }
 
