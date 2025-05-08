@@ -34,7 +34,7 @@ void setup_carga_retorno(){
 	TCCR1A &= ~(1 << WGM10);
 	TCCR1A |= (1 << WGM11);
 	TCCR1B |= ((1 << WGM12) | (1 << WGM13));
-	ICR1= 0xFFFF;	//Max en ICR1 al maximo
+	ICR1= 0x3CAF;	//Max en ICR1 al maximo
 	
 	//PREESCALADO DE 8
 	TCCR1B &= ~((1 << CS10) | (1 << CS12));
@@ -67,7 +67,7 @@ void setup_carga_retorno(){
 }
 
 ISR(TIMER3_OVF_vect){
-	TCNT3=0xD8F0;	//Devuelve la cuenta a donde le toca
+	TCNT3=0x3CAF;	//Devuelve la cuenta a donde le toca
 	if(habilita==1){	//Comprueba si tiene permiso a rehabilitar las interrupciones
 		PCMSK0 |= ((1 << PCINT0) | (1 << PCINT1));	//Habilita las interrupciones especificas
 		habilita = 0;	//Cancela la habilitación	
@@ -81,7 +81,7 @@ ISR(PCINT0_vect){
 		motor_retorno=0;	//Avisa de que el motor esta parado
 		PCMSK0 &= ~(1 << PCINT0);	//Deshabilita la interrupcion
 		habilita = 1;	//Permite que se pueda rehabilitar la interrupcion
-		TCNT3=0xD8F0;	//Pone la cuenta a falta de 10000, para asegurarnos de que pasan 10 ms
+		TCNT3=0x3DAF;	//Pone la cuenta a falta de 10000, para asegurarnos de que pasan 10 ms
 	}
 }
 
@@ -92,7 +92,7 @@ ISR(PCINT1_vect){
 		motor_carga=0;	//Avisa de que el motor esta parado
 		PCMSK0 &= ~(1 << PCINT1);	//Deshabilita la interrupcion
 		habilita = 1;	//Permite que se pueda rehabilitar la interrupcion
-		TCNT3=0xD8F0;	//Pone la cuenta a falta de 10000, para asegurarnos de que pasan 10 ms
+		TCNT3=0x3DAF;	//Pone la cuenta a falta de 10000, para asegurarnos de que pasan 10 ms
 	}
 }
 
