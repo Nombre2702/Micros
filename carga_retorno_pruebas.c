@@ -34,7 +34,7 @@ void setup_carga_retorno(){
 	TCCR1A &= ~(1 << WGM10);
 	TCCR1A |= (1 << WGM11);
 	TCCR1B |= ((1 << WGM12) | (1 << WGM13));
-	ICR1= 0x3CAF;	//Max en ICR1 al maximo
+	ICR1= 0xFFFF;	//Max en ICR1 al maximo
 	
 	//PREESCALADO DE 8
 	TCCR1B &= ~((1 << CS10) | (1 << CS12));
