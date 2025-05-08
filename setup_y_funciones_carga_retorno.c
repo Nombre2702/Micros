@@ -6,6 +6,8 @@
  */ 
 
 #include "carga_retorno.h"
+#include <avr/io.h>
+#include <avr/interrupt.h>
 
 //INICIALIZAR VARIABLES INTERNAS DE ESTADO
 volatile uint8_t motor_carga = 0;
@@ -16,12 +18,12 @@ volatile uint8_t habilita = 0;
 
 void setup_rebotes(){
 	cli();
-	TCCR3B &= ~(1 << COM3A0);	//Modo de funcionamiento normal
-	TCCR3B &= ~(1 << COM3A1);	//Modo de funcionamiento normal
+	TCCR3A &= ~(1 << COM3A0);	//Modo de funcionamiento normal
+	TCCR3A &= ~(1 << COM3A1);	//Modo de funcionamiento normal
 	TCCR3B |= (1 << CS31);	//Preescalado de 8
 	TCCR3B &= ~(1 << CS30);	//Preescalado de 8
 	TCCR3B &= ~(1 << CS32);	//Preescalado de 8
-	TCNT3 = 0xD8F0;	//Inica la cuenta para que solo queden 10000, 10ms, evita la necesidad de output compares
+	TCNT3 = 0x3CAF;	//Inica la cuenta para que solo queden 50000, 50ms, evita la necesidad de output compares
 	TIMSK3 |= (1 << TOIE3);	//Habilita interrupciones
 	sei();
 }
@@ -33,7 +35,7 @@ void setup_carga_retorno(){
 	TCCR1A &= ~(1 << WGM10);
 	TCCR1A |= (1 << WGM11);
 	TCCR1B |= ((1 << WGM12) | (1 << WGM13));
-	ICR1= 0xFFFF;	//Max en ICR1 al maximo
+	ICR1= 0x3CAF;	//Max en ICR1 al maximo
 	
 	//PREESCALADO DE 8
 	TCCR1B &= ~((1 << CS10) | (1 << CS12));
@@ -55,6 +57,9 @@ void setup_carga_retorno(){
 	DDRB &= ~(1 << PB1);	//PB1 como entrada 
 	PORTB |= (1 << PB0);	//Resistencia Pull-up de PB0
 	PORTB |= (1 << PB1);	//Resistencia Pull-ip de PB1
+
+	//SALIDAS PARA ELEGIR EL DIR
+	DDRK |= ((1 << PK6) | (1 << PK7))
 	
 	//HABILITAR INTERRUPCIONES
 	PCICR |= (1 <<PCIE0);	//Habilitar interrupciones de PCINT del 0 al 7
@@ -63,10 +68,10 @@ void setup_carga_retorno(){
 }
 
 ISR(TIMER3_OVF_vect){
-	TCNT3=0xD8F0;	//Devuelve la cuenta a donde le toca
+	TCNT3=0x3CAF;	//Devuelve la cuenta a donde le toca
 	if(habilita==1){	//Comprueba si tiene permiso a rehabilitar las interrupciones
 		PCMSK0 |= ((1 << PCINT0) | (1 << PCINT1));	//Habilita las interrupciones especificas
-		habilita = 0;	//Cancela la habilitaci n	
+		habilita = 0;	//Cancela la habilitación	
 	}
 }
 
@@ -77,7 +82,7 @@ ISR(PCINT0_vect){
 		motor_retorno=0;	//Avisa de que el motor esta parado
 		PCMSK0 &= ~(1 << PCINT0);	//Deshabilita la interrupcion
 		habilita = 1;	//Permite que se pueda rehabilitar la interrupcion
-		TCNT3=0xD8F0;	//Pone la cuenta a falta de 10000, para asegurarnos de que pasan 10 ms
+		TCNT3=0x3CAF;	//Pone la cuenta a falta de 50000, para asegurarnos de que pasan 50 ms
 	}
 }
 
@@ -88,7 +93,7 @@ ISR(PCINT1_vect){
 		motor_carga=0;	//Avisa de que el motor esta parado
 		PCMSK0 &= ~(1 << PCINT1);	//Deshabilita la interrupcion
 		habilita = 1;	//Permite que se pueda rehabilitar la interrupcion
-		TCNT3=0xD8F0;	//Pone la cuenta a falta de 10000, para asegurarnos de que pasan 10 ms
+		TCNT3=0x3CAF;	//Pone la cuenta a falta de 50000, para asegurarnos de que pasan 50 ms
 	}
 }
 
