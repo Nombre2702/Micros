@@ -56,6 +56,9 @@ void setup_carga_retorno(){
 	DDRB &= ~(1 << PB1);	//PB1 como entrada 
 	PORTB |= (1 << PB0);	//Resistencia Pull-up de PB0
 	PORTB |= (1 << PB1);	//Resistencia Pull-ip de PB1
+
+	//SALIDAS PARA ELEGIR EL DIR
+	DDRK |= ((1 << PK6) |= (1 << PK7))
 	
 	//HABILITAR INTERRUPCIONES
 	PCICR |= (1 <<PCIE0);	//Habilitar interrupciones de PCINT del 0 al 7
