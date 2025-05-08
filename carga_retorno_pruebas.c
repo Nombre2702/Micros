@@ -81,7 +81,7 @@ ISR(PCINT0_vect){
 		motor_retorno=0;	//Avisa de que el motor esta parado
 		PCMSK0 &= ~(1 << PCINT0);	//Deshabilita la interrupcion
 		habilita = 1;	//Permite que se pueda rehabilitar la interrupcion
-		TCNT3=0x3DAF;	//Pone la cuenta a falta de 10000, para asegurarnos de que pasan 10 ms
+		TCNT3=0x3CAF;	//Pone la cuenta a falta de 10000, para asegurarnos de que pasan 10 ms
 	}
 }
 
@@ -92,7 +92,7 @@ ISR(PCINT1_vect){
 		motor_carga=0;	//Avisa de que el motor esta parado
 		PCMSK0 &= ~(1 << PCINT1);	//Deshabilita la interrupcion
 		habilita = 1;	//Permite que se pueda rehabilitar la interrupcion
-		TCNT3=0x3DAF;	//Pone la cuenta a falta de 10000, para asegurarnos de que pasan 10 ms
+		TCNT3=0x3CAF;	//Pone la cuenta a falta de 10000, para asegurarnos de que pasan 10 ms
 	}
 }
 
