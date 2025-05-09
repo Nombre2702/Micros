@@ -199,7 +199,7 @@ void bajar_carga(void (*callback)(void)){
 	}
 }
 
-void carga(){
+void carga(void(*callback)(void)){
 	desactivar_retorno=0;
 	if (desactivar_carga==0){
 		PORTK &= ~(1 << PK7); //Dir M1 es K7, lo pone a 0 para bajar
@@ -212,6 +212,9 @@ void carga(){
 			motor_carga=1;	//Avisa de que el motor esta encendido
 			desactivar_carga= 1;
 		}
+	}
+	if((desactivar_carga==1)&&(car_arriba==1){
+		callback();
 	}
 }
 
