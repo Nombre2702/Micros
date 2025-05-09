@@ -62,7 +62,7 @@ void setup_carga_retorno(){
 	
 	//HABILITAR INTERRUPCIONES
 	PCICR |= (1 <<PCIE0);	//Habilitar interrupciones de PCINT del 0 al 7
-	PCMSK0 |= ((1 << PCINT0) | (1 << PCINT1));	//Habilitar interrupciones especificas
+	PCMSK0 |= ((1 << PCINT0)|(1 << PCINT1));	//Habilitar interrupciones especificas
 	sei();
 }
 
@@ -86,9 +86,6 @@ ISR(PCINT0_vect){
 		habilita = 1;	//Permite que se pueda rehabilitar la interrupcion
 		TCNT3=0x3CAF;	//Pone la cuenta a falta de 50000, para asegurarnos de que pasan 50 ms
 	}
-}
-
-ISR(PCINT1_vect){
 	if(!(PINB & (1 << PB1))){	//Comprueba que el cambio del pin haya sido flanco de bajada
 		TCCR1B &= ~(1 << COM1B1);	//Desactiva salida del PWM
 		TCCR1B &= ~(1 << COM1B0);	//Desactiva salida del PWM
