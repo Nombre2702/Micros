@@ -1,4 +1,4 @@
-/*
+ /*
  * main.c
  *
  * Created: 5/2/2025 11:52:42 AM
@@ -140,8 +140,8 @@ void bajar_carga(){
 }
 
 void puesta_cero(){
-	bajar_retorno;
-	subir_carga;
+	bajar_retorno();
+	subir_carga();
 }
 
 void ciclo_retorno(){
@@ -151,6 +151,7 @@ void ciclo_retorno(){
 		motor_retorno_status = leer_motor_retorno();
 	}
 	bajar_retorno();
+	motor_retorno_status=1
 	while(motor_retorno_status==1){
 		motor_retorno_status = leer_motor_retorno();
 	}
@@ -163,6 +164,7 @@ void ciclo_carga(){
 			motor_carga_status = leer_motor_carga();
 		}
 		bajar_carga();
+	        motor_carga_status=1
 		while(motor_carga_status==1){
 			motor_carga_status = leer_motor_carga();
 		}
@@ -172,6 +174,11 @@ int main(void){	//Ejemplo de uso
     setup_carga_retorno();
 	setup_rebotes();
 	puesta_cero();
+	motor_carga_status=1;
+	while((motor_carga_status==1)||(motor_retorno_status==1)){
+			motor_carga_status = leer_motor_carga();
+		        motor_retorno_status = leer_motor_retorno();
+		}
 	ciclo_retorno();
 	ciclo_carga();
 }
