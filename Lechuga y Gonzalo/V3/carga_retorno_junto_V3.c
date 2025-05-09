@@ -68,10 +68,10 @@ void setup_carga_retorno(){
 
 ISR(TIMER3_OVF_vect){
 	TCNT3=0x3CAF;	//Devuelve la cuenta a donde le toca
-	if((habilita>0)&&(habilita<4)){	//Requiere 4 ciclos de 50 ms para rehabilitar las interrupciones
+	if((habilita>0)&&(habilita<5)){	//Requiere 4 ciclos de 50 ms para rehabilitar las interrupciones
 		habilita++;
 	}
-	if(habilita==4){	//Comprueba si tiene permiso a rehabilitar las interrupciones, tras 4 ciclos de 50 ms, 200 ms
+	if(habilita==5){	//Comprueba si tiene permiso a rehabilitar las interrupciones, tras 4 ciclos de 50 ms, 200 ms
 		PCMSK0 |= ((1 << PCINT0) | (1 << PCINT1));	//Habilita las interrupciones especificas
 		habilita = 0;	//Cancela la habilitación	
 	}
