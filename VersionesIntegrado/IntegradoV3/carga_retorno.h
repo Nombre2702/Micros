@@ -21,5 +21,7 @@ void bajar_carga();
 void ceroRetorno();
 void ciclo_retorno();
 void ciclo_carga();
+void retorno();
+void carga();
 
 #endif /* RETORNO_H_ */
