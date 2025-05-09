@@ -148,7 +148,7 @@ void ciclo_retorno(){
 		motor_retorno_status = leer_motor_retorno();
 	}
 	bajar_retorno();
-	motor_retorno_status=1
+	motor_retorno_status=1;
 	while(motor_retorno_status==1){
 		motor_retorno_status = leer_motor_retorno();
 	}
@@ -161,7 +161,7 @@ void ciclo_carga(){
 			motor_carga_status = leer_motor_carga();
 		}
 		bajar_carga();
-	        motor_carga_status=1
+	        motor_carga_status=1;
 		while(motor_carga_status==1){
 			motor_carga_status = leer_motor_carga();
 		}
