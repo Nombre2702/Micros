@@ -1,0 +1,173 @@
+/*
+ * funciones_integracion.c
+ *
+ * Created: 06/05/2025 23:41:48
+ *  Author: ASUS
+ *
+ *	Aquí se incluyen las funciones que usará el equipo de integración
+ */ 
+
+#include "lanzador.h"
+
+// FLAGS FINALES DE CARRERA
+volatile uint8_t flancos_detectados;
+
+// FLAGS CABECEO
+volatile uint8_t direccion = 0;
+volatile uint8_t iniciado = 0;
+
+// FLAGS COMUNICACION
+volatile uint8_t flag_preparado_carga = 0;
+volatile uint8_t flag_disparo_listo = 0;
+volatile uint8_t flag_preparado_cabeceo = 0; // puede que no haga falta
+volatile uint8_t flag_vastago_preparado = 0; // puede que no haga falta
+volatile uint8_t flag_disparo_realizado = 0; // puede que no haga falta
+
+// PREPARACION CABECEO 
+// preparacionCabeceo solo se ejecuta si estamos a cero y el retorno nos deja pasar
+// tenemos que decir que hemos terminado este estado, con otra flag mas
+	// movemos a la izda hasta que el antirrebotes detecte SW2 una vez (flanco bajada)
+
+void prepararCabeceo(void(*callback)()){
+	
+	if(flag_preparado_cabeceo == 0){
+		brazoIzquierda();
+	}
+	
+	if(flancos_detectados & (1 << SW2)){
+		brazoParar();
+		flancos_detectados &= ~(1 << SW2);
+		flag_preparado_cabeceo = 1;
+		callback();
+	}
+}
+
+// CABECEO
+// cabeceo solo se ejecuta si estamos preparados
+// tengo que decir que estoy en este estado, con otro flag supongo
+	// sabemos que partimos del medio
+	// movemos a la izda hasta que el antirrebotes detecte SW2 una vez (flanco bajada)
+	// cuando lo detecte cambiamos de direccion (se me ocurre con hacerlo con una variable direccion y un if)
+
+void cabeceo(){
+
+	if (!iniciado) {
+		brazoIzquierda();
+		//iniciado = 1;
+		//direccion = 0;
+		
+		/*
+		if(flancos_detectados & (1 << SW2)){
+			//flancos_detectados &= ~(1 << SW2);	// limpio flancos
+			brazoParar();						// paro el brazo
+			iniciado = 1;						// cambiamos flag para que no entre aqui otra vez
+			direccion = 1;						// cambiamos la direccion
+		}
+		*/
+		
+	}
+
+	if (flancos_detectados & (1 << SW2)) {
+		flancos_detectados &= ~(1 << SW2); 
+
+		if (direccion == 0) {
+			brazoParar();
+			brazoDerecha();
+			direccion = 1;
+		} else {
+			brazoParar();
+			brazoIzquierda();
+			direccion = 0;
+		}
+	}
+}
+	
+// CARGA LANZADOR
+	// se va hasta la izquierda del todo, sabemos que vamos a estar en algún punto intermedio así que solo trenemos que esperar a un flanco de bajada de SW2
+	// luego se mueve hacia la derecha hasta que se detectan 2 flancos de bajada (uno en el medio y otro al llegar ambos de SW2)
+
+void prepararCarga(){
+	static uint8_t estado = 0;
+	static uint8_t flancos_contados = 0;
+	flag_disparo_realizado = 0;
+	
+	if(flag_vastago_preparado == 0){
+		vastagoArriba();
+		if(flancos_detectados & (1 << SW3)){
+			vastagoParar();
+			flancos_detectados &= ~(1 << SW3);
+			flag_vastago_preparado = 1;
+		}
+	}
+
+	switch (estado) {
+		case 0: 
+		brazoIzquierda();
+		if (flancos_detectados & (1 << SW2)) {
+			flancos_detectados &= ~(1 << SW2);
+			brazoParar();
+			estado = 1;
+			flancos_contados = 0;
+		}
+		break;
+
+		case 1:
+		brazoDerecha();
+		if (flancos_detectados & (1 << SW2)) {
+			flancos_detectados &= ~(1 << SW2);
+			flancos_contados++;
+			if (flancos_contados >= 2) {
+				brazoParar();
+				flag_preparado_carga = 1;
+				estado = 0;
+			}
+		}
+		break;
+	}
+}
+
+// CARGA 
+	// tiene que subir la barrera para encganchar la retencion y luego bajar el vastago para tensar las gomas
+void cargarDisparo(void(*callback)()){
+	
+	flag_vastago_preparado = 0;
+	if (flag_disparo_listo == 0){
+		barreraArriba();
+		
+		if(flancos_detectados & (1 << SW4)){
+			barreraParar();
+			vastagoAbajo();
+			flag_vastago_preparado = 0;
+			flancos_detectados &= ~(1 << SW4);
+
+			if(flancos_detectados & (1 << SW3)){
+				vastagoParar();
+				flag_disparo_listo = 1;
+				flancos_detectados &= ~(1 << SW3);
+				callback();
+			}
+		}
+	}
+
+	if (flag_disparo_listo == 1){
+		ledOn();
+	}
+}
+
+// DISPARO
+	// lo único que tiene que hacer es liberar la retención, no toca el vástago!!
+void disparo(void(*callback)(void)){
+	flag_disparo_listo = 0;
+	if (flag_disparo_realizado == 0){
+		brazoParar();
+		ledOff();
+		barreraAbajo();
+		
+		if (flancos_detectados & (1 << SW4)){
+			barreraParar();
+			flancos_detectados &= ~(1 << SW4);
+			flag_disparo_realizado = 1;
+			callback();
+		}
+	}
+}
