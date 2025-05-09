@@ -78,7 +78,7 @@ ISR(TIMER3_OVF_vect){
 }
 
 ISR(PCINT0_vect){
-	if(!(PINB & (1 << PB0))){	//Comprueba que el cambio del pin haya sido flanco de bajada
+	if(!(PINB & (1 << PB0))){	//Comprueba que el cambio del pin haya B0 sido flanco de bajada
 		TCCR1A &= ~(1 << COM1A1);	//Desactiva salida del PWM
 		TCCR1A &= ~(1 << COM1A0);	//Desactiva salida del PWM
 		motor_retorno=0;	//Avisa de que el motor esta parado
@@ -86,7 +86,7 @@ ISR(PCINT0_vect){
 		habilita = 1;	//Permite que se pueda rehabilitar la interrupcion
 		TCNT3=0x3CAF;	//Pone la cuenta a falta de 50000, para asegurarnos de que pasan 50 ms
 	}
-	if(!(PINB & (1 << PB1))){	//Comprueba que el cambio del pin haya sido flanco de bajada
+	if(!(PINB & (1 << PB1))){	//Comprueba que el cambio del pin B1 haya sido flanco de bajada
 		TCCR1B &= ~(1 << COM1B1);	//Desactiva salida del PWM
 		TCCR1B &= ~(1 << COM1B0);	//Desactiva salida del PWM
 		motor_carga=0;	//Avisa de que el motor esta parado
