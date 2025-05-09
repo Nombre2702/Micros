@@ -170,12 +170,12 @@ void ciclo_carga(){
 int main(void){	//Ejemplo de uso
     setup_carga_retorno();
 	setup_rebotes();
-	puesta_cero();
+	/*puesta_cero();
 	motor_carga_status=1;
 	while((motor_carga_status==1)||(motor_retorno_status==1)){
 			motor_carga_status = leer_motor_carga();
 		        motor_retorno_status = leer_motor_retorno();
-		}
+		}*/
 	ciclo_retorno();
 	ciclo_carga();
 }
