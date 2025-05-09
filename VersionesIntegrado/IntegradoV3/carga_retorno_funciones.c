@@ -210,7 +210,7 @@ void carga(){
 			TCCR1B |= (1 << COM1B1);	//Activa la salida del PWM
 			TCCR1B &= ~(1 << COM1B0);	//Activa la salida del PWM
 			motor_carga=1;	//Avisa de que el motor esta encendido
-			desactivar_carga= 0;
+			desactivar_carga= 1;
 		}
 	}
 }
