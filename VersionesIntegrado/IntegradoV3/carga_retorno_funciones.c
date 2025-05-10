@@ -109,13 +109,13 @@ void finalCarga(){
 	PCMSK0 &= ~(1 << PCINT1);	//Deshabilita la interrupcion
 	habilita = 1;	//Permite que se pueda rehabilitar la interrupcion
 	TCNT3=0x3CAF;	//Pone la cuenta a falta de 50000, para asegurarnos de que pasan 50 ms
+	TCCR1B &= ~(1 << COM1B1);	//Desactiva salida del PWM
+	TCCR1B &= ~(1 << COM1B0);	//Desactiva salida del PWM
 	if (motor_carga==2){
 		motor_carga=1;	//Avisa de que el motor esta encendido
 		car_arriba = 0;
 	}
 	if (motor_carga==1){
-		TCCR1B &= ~(1 << COM1B1);	//Desactiva salida del PWM
-		TCCR1B &= ~(1 << COM1B0);	//Desactiva salida del PWM
 		motor_carga=0;	//Avisa de que el motor esta parado
 		car_arriba = 1;
 	}
@@ -125,17 +125,14 @@ void finalRetorno(){
 	PCMSK0 &= ~(1 << PCINT0);	//Deshabilita la interrupcion
 	habilita = 1;	//Permite que se pueda rehabilitar la interrupcion
 	TCNT3=0x3CAF;	//Pone la cuenta a falta de 50000, para asegurarnos de que pasan 50 ms
+	TCCR1A &= ~(1 << COM1A1);	//Desactiva salida del PWM
+	TCCR1A &= ~(1 << COM1A0);	//Desactiva salida del PWM
 	if (motor_retorno==1){
-		PORTK &= ~(1 << PK6); //Dir M5 es K6, lo pone a 0 para bajar
-		TCCR1A |= (1 << COM1A1);	//Activa la salida del PWM
-		TCCR1A &= ~(1 << COM1A0);	//Activa la salida del PWM
 		motor_retorno=2;	//Avisa de que el motor esta encendido bajando
 		ret_arriba = 1;
 		
 	}
 	if (motor_retorno==2){
-		TCCR1A &= ~(1 << COM1A1);	//Desactiva salida del PWM
-		TCCR1A &= ~(1 << COM1A0);	//Desactiva salida del PWM
 		motor_retorno=0;	//Avisa de que el motor esta parado
 		ret_arriba = 0;
 	}
