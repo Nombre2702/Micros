@@ -106,9 +106,11 @@ ISR(PCINT0_vect){
 }
 
 void finalCarga(){
+	/*
 	PCMSK0 &= ~(1 << PCINT1);	//Deshabilita la interrupcion
 	habilita = 1;	//Permite que se pueda rehabilitar la interrupcion
 	TCNT3=0x3CAF;	//Pone la cuenta a falta de 50000, para asegurarnos de que pasan 50 ms
+        */
 	TCCR1B &= ~(1 << COM1B1);	//Desactiva salida del PWM
 	TCCR1B &= ~(1 << COM1B0);	//Desactiva salida del PWM
 	if (motor_carga==2){
@@ -122,9 +124,11 @@ void finalCarga(){
 }
 
 void finalRetorno(){
-	PCMSK0 &= ~(1 << PCINT0);	//Deshabilita la interrupcion
+	/*
+        PCMSK0 &= ~(1 << PCINT0);	//Deshabilita la interrupcion
 	habilita = 1;	//Permite que se pueda rehabilitar la interrupcion
 	TCNT3=0x3CAF;	//Pone la cuenta a falta de 50000, para asegurarnos de que pasan 50 ms
+        */
 	TCCR1A &= ~(1 << COM1A1);	//Desactiva salida del PWM
 	TCCR1A &= ~(1 << COM1A0);	//Desactiva salida del PWM
 	if (motor_retorno==1){
