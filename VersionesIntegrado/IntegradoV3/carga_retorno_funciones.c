@@ -16,6 +16,8 @@ volatile uint8_t ret_arriba = 2;
 volatile uint8_t car_arriba = 2;
 volatile uint8_t desactivar_retorno=0;
 volatile uint8_t desactivar_carga=0;
+volatile uint8_t hab_car_int =1;
+volatile uint8_t hab_ret_int =1;
 volatile uint8_t boton = 0;
 
 void setup_rebotes(){
@@ -202,15 +204,20 @@ void bajar_carga(void (*callback)(void)){
 void carga(void(*callback)(void)){
 	desactivar_retorno=0;
 	if (desactivar_carga==0){
-		PORTK &= ~(1 << PK7); //Dir M1 es K7, lo pone a 0 para bajar
-		TCCR1B |= (1 << COM1B1);	//Activa la salida del PWM
-		TCCR1B &= ~(1 << COM1B0);	//Activa la salida del PWM
+		if (hab_car_int==1){ 
+			PORTK &= ~(1 << PK7); //Dir M1 es K7, lo pone a 0 para bajar
+		        TCCR1B |= (1 << COM1B1);	//Activa la salida del PWM
+		        TCCR1B &= ~(1 << COM1B0); //Activa la salida del PWM
+			motor_carga=2;
+			hab_car_int=0;
+		}
 		if (car_arriba==0){
-			PORTK |= (1 << PK7); //Dir M1 es K7, lo pone a 0 para subir
+			PORTK |= (1 << PK7); //Dir M1 es K7, lo pone a 1 para subir
 			TCCR1B |= (1 << COM1B1);	//Activa la salida del PWM
 			TCCR1B &= ~(1 << COM1B0);	//Activa la salida del PWM
 			motor_carga=1;	//Avisa de que el motor esta encendido
 			desactivar_carga= 1;
+			hab_car_int=1;
 		}
 	}
 	if((desactivar_carga==1)&&(car_arriba==1){
@@ -221,16 +228,20 @@ void carga(void(*callback)(void)){
 void retorno(){
 	desactivar_carga=0;
 	if(desactivar_retorno == 0){
-		PORTK |= (1 << PK6);	//Dir M5 es K6, lo pone a 1 para subir
-		TCCR1A |= (1 << COM1A1);	//Activa la salida del PWM
-		TCCR1A &= ~(1 << COM1A0);	//Activa la salida del PWM
-		motor_retorno=1;	//Avisa de que el motor esta encendido
+		if (hab_ret_int==1) {
+	                PORTK |= (1 << PK6);	//Dir M5 es K6, lo pone a 1 para subir
+		        TCCR1A |= (1 << COM1A1);	//Activa la salida del PWM
+		        TCCR1A &= ~(1 << COM1A0);	//Activa la salida del PWM
+		        motor_retorno=1; //Avisa de que el motor esta encendido
+			hab_ret_int=0;
+		}
 		if (ret_arriba==1){
 			PORTK &= ~(1 << PK6); //Dir M5 es K6, lo pone a 0 para bajar
 			TCCR1A |= (1 << COM1A1);	//Activa la salida del PWM
 			TCCR1A &= ~(1 << COM1A0);	//Activa la salida del PWM
 			motor_retorno=2;	//Avisa de que el motor esta encendido
 			desactivar_retorno = 1;
+			hab_ret_int=1;
 		}
 	}
 }
