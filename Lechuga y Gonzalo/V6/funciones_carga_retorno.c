@@ -239,11 +239,10 @@ void retorno(){
 	}
 }
 
-/*
 void ceroRetorno(void(*callback)()){
-	bajar_retorno();
-	subir_carga();
+	bajar_retorno();	//Baja el retorno
+	subir_carga();	//Sube la carga
 	callback();
 }
 
-*/
+
