@@ -206,7 +206,7 @@ void carga(void(*callback)(void)){
 			hab_car_int=1;			//Reactiva que se puedan poner los motores hacia abajo de nuevo
 		}
 	}
-	if((desactivar_carga==1)&&(car_arriba==1){ //Si ha llegado arriba y ha completado el ciclo, avisa de que ha acabado
+	if((desactivar_carga==1)&&(car_arriba==1){	//Si ha llegado arriba y ha completado el ciclo, avisa de que ha acabado
 		callback();
 	}
 }
