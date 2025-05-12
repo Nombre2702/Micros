@@ -132,35 +132,47 @@ int leer_motor_carga(){
 	return motor_carga;	//Devuelve el estado del motor de carga
 }
 
-void subir_retorno() {
+void subir_retorno(void(*callback(void)) {
 	PORTK |= (1 << PK6);		//Dir M5 es K6, lo pone a 1 para subir
 	TCCR1A |= (1 << COM1A1);	//Activa la salida del PWM
 	TCCR1A &= ~(1 << COM1A0);	//Activa la salida del PWM
 	motor_retorno=1;		//Avisa de que el motor esta encendido
+	if(ret_arriba == 1){
+		callback();
+	}
 }
 
-void bajar_retorno(){
+void bajar_retorno(void(*callback(void)){
 	PORTK &= ~(1 << PK6); 		//Dir M5 es K6, lo pone a 0 para bajar
 	TCCR1A |= (1 << COM1A1);	//Activa la salida del PWM
 	TCCR1A &= ~(1 << COM1A0);	//Activa la salida del PWM
 	motor_retorno=2;		//Avisa de que el motor esta encendido
+	if(ret_arriba == 0){
+		callback();
+	}
 }
 
-void subir_carga(){
+void subir_carga(void(*callback(void)){
 	PORTK |= (1 << PK7);		 //Dir M1 es K7, lo pone a 0 para subir
 	TCCR1B |= (1 << COM1B1);	//Activa la salida del PWM
 	TCCR1B &= ~(1 << COM1B0);	//Activa la salida del PWM
 	motor_carga=1;			//Avisa de que el motor esta encendido
+	if(car_arriba == 1){
+		callback();
+	}
 }
 
-void bajar_carga(){
+void bajar_carga(void(*callback(void))){
 	PORTK &= ~(1 << PK7);		 //Dir M1 es K7, lo pone a 0 para bajar
 	TCCR1B |= (1 << COM1B1);	//Activa la salida del PWM
 	TCCR1B &= ~(1 << COM1B0);	//Activa la salida del PWM
 	motor_carga=2;			//Avisa de que el motor esta encendido
+	if(car_arriba == 0){
+		callback();
+	}
 }
 
-void carga(){
+void carga(void(*callback(void)){
 	desactivar_retorno=0;				//Reactiva el retorno
 	if (desactivar_carga==0){			//Si esta habilitado, manda motores hacia abajo
 		if (hab_car_int==1){			//Comprueba si esta habilitado
@@ -172,6 +184,9 @@ void carga(){
 			desactivar_carga= 1;		//Como ya ha puesto hacia arriba y completado el ciclo, desactiva
 			hab_car_int=1;			//Reactiva que se puedan poner los motores hacia abajo de nuevo
 		}
+	}
+	if((desactivar_carga==1)&&(car_arriba==1){	//Si ha llegado arriba y ha completado el ciclo, avisa de que ha acabado
+		callback();
 	}
 }
 
