@@ -87,7 +87,6 @@ void finalCarga(){
 	TCCR1B &= ~(1 << COM1B1);	//Desactiva salida del PWM
 	TCCR1B &= ~(1 << COM1B0);	//Desactiva salida del PWM
 	if (motor_carga==2){		//Comprueba si estaba bajando
-		motor_carga=1;		//Avisa de que el motor pasa a estar encendido subiendo
 		car_arriba = 0;		//Avisa de que esta abajo
 	}
 	if (motor_carga==1){		//Comprueba si estaba subiendo
@@ -101,7 +100,6 @@ void finalRetorno(){
 	TCCR1A &= ~(1 << COM1A1);	//Desactiva salida del PWM
 	TCCR1A &= ~(1 << COM1A0);	//Desactiva salida del PWM
 	if (motor_retorno==1){		//Comprueba si estaba subiendo
-		motor_retorno=2;	//Avisa de que el motor pasa a estar encendido bajando
 		ret_arriba = 1;		//Avisa de que esta arriba
 		
 	}
