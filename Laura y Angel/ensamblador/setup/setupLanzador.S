@@ -10,10 +10,10 @@
 
 setupLanzador:
 	ldi r16, 0b11100011
-    sts DDRB, r16
-    sts PORTB, r16
+    	sts DDRB, r16
+    	sts PORTB, r16
 
-	// Salidas: lanzador
+// Salidas: lanzador
     ldi r16, 0b01111111
     sts DDRL, r16            
     sts PORTL, r16
@@ -56,7 +56,7 @@ setupLanzador:
     sts TCCR5B, r16
 
 	lds r16, TIMSK5
-	ori r16, (1 << OCIE5A)  ; Habilitar interrupción por comparación
+	ori r16, (1 << OCIE5A)  ; Habilitar interrupciÃ³n por comparaciÃ³n
 	sts TIMSK5, r16
 
 	ldi r16, 0x7D
