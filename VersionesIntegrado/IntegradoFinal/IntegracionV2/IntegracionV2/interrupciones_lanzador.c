@@ -7,7 +7,7 @@
 #include "lanzador.h"
 #include "integracion.h"
 
-// me miolaria hacer una función setup para las variables
+// me miolaria hacer una funciÃ³n setup para las variables
 
 // VARIABLES LED
 volatile uint8_t init_cont_led = 0;
@@ -154,6 +154,7 @@ void ceroLanzador(void (*callback)(void)){
 		init_cont_cero = 0;
 		init_cont_barrera = 0;
 		cont_barrera = 0;
-		callback(); // le digo a integración que he terminado
+		callback(); // le digo a integraciÃ³n que he terminado
+		inicio_cero = 1;
 	}
 }
