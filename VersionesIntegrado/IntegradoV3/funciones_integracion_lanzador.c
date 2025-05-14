@@ -4,7 +4,7 @@
  * Created: 06/05/2025 23:41:48
  *  Author: ASUS
  *
- *	AquÌ se incluyen las funciones que usar· el equipo de integraciÛn
+ *	Aqu√≠ se incluyen las funciones que usar√° el equipo de integraci√≥n
  */ 
 
 #include "lanzador.h"
@@ -19,9 +19,9 @@ volatile uint8_t iniciado = 0;
 // FLAGS COMUNICACION
 volatile uint8_t flag_preparado_carga = 0;
 volatile uint8_t flag_disparo_listo = 0;
-volatile uint8_t flag_preparado_cabeceo = 0; // puede que no haga falta
-volatile uint8_t flag_vastago_preparado = 0; // puede que no haga falta
-volatile uint8_t flag_disparo_realizado = 0; // puede que no haga falta
+volatile uint8_t flag_preparado_cabeceo = 0;
+volatile uint8_t flag_vastago_preparado = 0; 
+volatile uint8_t flag_disparo_realizado = 0; 
 
 // PREPARACION CABECEO 
 // preparacionCabeceo solo se ejecuta si estamos a cero y el retorno nos deja pasar
@@ -53,18 +53,8 @@ void cabeceo(){
 
 	if (!iniciado) {
 		brazoIzquierda();
-		//iniciado = 1;
-		//direccion = 0;
-		
-		/*
-		if(flancos_detectados & (1 << SW2)){
-			//flancos_detectados &= ~(1 << SW2);	// limpio flancos
-			brazoParar();						// paro el brazo
-			iniciado = 1;						// cambiamos flag para que no entre aqui otra vez
-			direccion = 1;						// cambiamos la direccion
-		}
-		*/
-		
+		iniciado = 1;
+		direccion = 0;		
 	}
 
 	if (flancos_detectados & (1 << SW2)) {
@@ -83,7 +73,7 @@ void cabeceo(){
 }
 	
 // CARGA LANZADOR
-	// se va hasta la izquierda del todo, sabemos que vamos a estar en alg˙n punto intermedio asÌ que solo trenemos que esperar a un flanco de bajada de SW2
+	// se va hasta la izquierda del todo, sabemos que vamos a estar en alg√∫n punto intermedio as√≠ que solo trenemos que esperar a un flanco de bajada de SW2
 	// luego se mueve hacia la derecha hasta que se detectan 2 flancos de bajada (uno en el medio y otro al llegar ambos de SW2)
 
 void prepararCarga(){
@@ -155,7 +145,7 @@ void cargarDisparo(void(*callback)()){
 }
 
 // DISPARO
-	// lo ˙nico que tiene que hacer es liberar la retenciÛn, no toca el v·stago!!
+	// lo √∫nico que tiene que hacer es liberar la retenci√≥n, no toca el v√°stago!!
 void disparo(void(*callback)(void)){
 	
 	if (flag_disparo_realizado == 0){
