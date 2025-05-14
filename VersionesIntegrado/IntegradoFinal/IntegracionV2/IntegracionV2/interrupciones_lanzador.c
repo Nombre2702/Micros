@@ -7,8 +7,6 @@
 #include "lanzador.h"
 #include "integracion.h"
 
-// me miolaria hacer una función setup para las variables
-
 // VARIABLES LED
 volatile uint8_t init_cont_led = 0;
 volatile uint16_t cont_led = 0;
